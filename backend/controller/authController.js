@@ -45,7 +45,7 @@ exports.loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({email});
-        if (!user || (await user.comparePassword(password))) {
+        if (!user || !(await user.comparePassword(password))) {
             return res.status(400).json({message: "Invalid credentials"})
         }
 
@@ -55,11 +55,19 @@ exports.loginUser = async (req, res) => {
             token: generateToken(user._id),
         });
     } catch (err) {
-        res.status(500).json({message: "error registering user", error: err.message})
+        res.status(500).json({message: "error login user", error: err.message})
     }
 }
 
 // Get User Info
 exports.getUserInfo = async (req, res) => {
-    
+    try {
+        const user = await User.findById(req.user.id).select("-password");
+
+        if (!user) {return res.status(400).json({message: "User not found"})}
+
+        res.status(200).json({user})
+    } catch (err) {
+        res.status(500).json({message: "error getting user", error: err.message})
+    }
 }
