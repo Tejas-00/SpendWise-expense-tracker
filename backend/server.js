@@ -25,6 +25,9 @@ connectDB();
 
 app.use("/api/v1/auth", authRoutes);
 
+// Serve uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`server running on port ${port}`)
