@@ -8,9 +8,11 @@ const generateToken = (id) => {
 
 // Register User
 exports.registerUser = async (req, res) => {
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, profileImageUrl } = req.body;
 
-    if ( !fullName || !email || !password ) {return res.status(400).json({ message:"All fields are required" })}
+    if ( !fullName || !email || !password ) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
 
     try {
         const existingUser = await User.findOne({email});
@@ -23,7 +25,7 @@ exports.registerUser = async (req, res) => {
             profileImageUrl
         });
 
-        res.status(201).json({
+        res.status(200).json({
             id: user._id,
             user,
             token: generateToken(user._id),
@@ -33,12 +35,31 @@ exports.registerUser = async (req, res) => {
     }
 }
 
-// Register User
-exports.registerUser = async (req, res) => {
-    
+// Login User
+exports.loginUser = async (req, res) => {
+    const {email, password} = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({message: "All fields are required"})
+    }
+
+    try {
+        const user = await User.findOne({email});
+        if (!user || (await user.comparePassword(password))) {
+            return res.status(400).json({message: "Invalid credentials"})
+        }
+
+        res.status(200).json({
+            id: user._id,
+            user,
+            token: generateToken(user._id),
+        });
+    } catch (err) {
+        res.status(500).json({message: "error registering user", error: err.message})
+    }
 }
 
-// Register User
-exports.registerUser = async (req, res) => {
+// Get User Info
+exports.getUserInfo = async (req, res) => {
     
 }

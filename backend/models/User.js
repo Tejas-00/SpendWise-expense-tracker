@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const bcryptjs = require("bcryptjs")
 
 const userSchema = new mongoose.Schema({
-    fullname: { type: String, required: true},
+    fullName: { type: String, required: true},
     email: { type: String, required:true, unique: true },
     password: { type: String, required: true },
     profileImageUrl: { type: String, default: null }
@@ -22,7 +22,7 @@ userSchema.pre('save', async function (next) { // a Mongoose middleware runs bef
 
 // compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
-    return bcryptjs.compare(candidatePassword, this.password)
+    return await bcryptjs.compare(candidatePassword, this.password)
 }
 
 module.exports = mongoose.model("User", userSchema)
