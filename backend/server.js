@@ -7,6 +7,7 @@ const app = express()
 
 const connectDB = require("./config/db.js")
 const authRoutes = require("./routes/authRoutes.js")
+const incomeRoutes = require("./routes/incomeRoutes.js")
 
 
 // Middleware to handle CORS
@@ -24,6 +25,7 @@ app.use(express.json());
 connectDB();
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/income", incomeRoutes);
 
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
