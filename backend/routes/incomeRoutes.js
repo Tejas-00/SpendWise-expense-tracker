@@ -2,7 +2,6 @@ const express = require("express")
 const { addIncome, getAllIncome, deleteIncome, downloadIncomeExcel } = require("../controller/incomeController.js")
 
 const { protect } = require("../middlewares/authMiddleware.js");
-const { model, models } = require("mongoose");
 
 const router = express.Router();
 

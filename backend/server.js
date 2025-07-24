@@ -8,6 +8,7 @@ const app = express()
 const connectDB = require("./config/db.js")
 const authRoutes = require("./routes/authRoutes.js")
 const incomeRoutes = require("./routes/incomeRoutes.js")
+const expenseRoutes = require("./routes/expenseRoutes.js")
 
 
 // Middleware to handle CORS
