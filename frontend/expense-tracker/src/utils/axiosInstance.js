@@ -1,5 +1,5 @@
 import axios from "axios"
-import {BASE_URL} from "./apiPath.js"
+import { BASE_URL } from "./apiPath.js"
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        const accessToken= localStorage.getItem("token");
+        const accessToken = localStorage.getItem("token");
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
@@ -20,4 +20,7 @@ axiosInstance.interceptors.request.use(
     }, (error) => {
         return Promise.reject(error)
     }
-    )
+)
+
+// Response Interseptors
+axiosInstance.interceptors
