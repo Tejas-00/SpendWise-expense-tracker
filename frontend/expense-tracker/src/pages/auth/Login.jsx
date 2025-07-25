@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import AuthLayout from '../../components/layouts/AuthLayout'
 import Input from '../../components/inputs/Input';
 import { validEmail } from '../../utils/helper';
+import axiosInstance from "../../utils/axiosInstance.js"
+import { API_PATH } from '../../utils/apiPath.js';
 
 const Login = () => {
 
@@ -10,12 +12,12 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // Handle Login Form Submission
-  const handleLogin = async(e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
+
     if (!validEmail(email)) {
       setError("Please enter a valid email address");
       return;
@@ -29,7 +31,24 @@ const Login = () => {
     setError("");
 
     // Login API call
+    try {
+      const response = await axiosInstance.post(API_PATH.AUTH.LOGIN, {
+        email,
+        password,
+      });
+      const { token, user } = response.data;
 
+      if (token) {
+        localStorage.setItem("token", token);
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError(`${error.message}, please try again later`)
+      }
+    }
   }
 
   return (
@@ -41,7 +60,7 @@ const Login = () => {
         </p>
 
         <form onSubmit={handleLogin}>
-          
+
           <Input
             type="text"
             value={email}
@@ -65,8 +84,8 @@ const Login = () => {
           </button>
 
           <p className='text-[13px] text-slate-800 mt-3'>
-            Don't have an account? 
-            <Link className='font-medium text-primary underline'  to="/signUp"> Sign Up</Link>
+            Don't have an account?
+            <Link className='font-medium text-primary underline' to="/signUp"> Sign Up</Link>
           </p>
 
         </form>
