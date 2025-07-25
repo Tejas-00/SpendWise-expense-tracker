@@ -11,26 +11,29 @@ import Login from "../src/pages/auth/Login";
 import SignUp from "../src/pages/auth/SignUp";
 import Home from "../src/pages/Dashboard/Home";
 import Income from "../src/pages/Dashboard/Income";
-import Expense from "../src/pages/Dashboard/Expense"; 
+import Expense from "../src/pages/Dashboard/Expense";
+import UserProvider from './context/userContext';
 
 const App = () => {
   return (
-    <div className='text-3xl font-bold text-purple-500'>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Root />} />
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/signUp" exact element={<SignUp />} />
-          <Route path="/dashboard" exact element={<Home />} />
-          <Route path="/income" exact element={<Income />} />
-          <Route path="/expense" exact element={<Expense />} />
-        </Routes>
-      </Router>
-    </div>
+    <UserProvider>
+      <div className='text-3xl font-bold text-purple-500'>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Root />} />
+            <Route path="/login" exact element={<Login />} />
+            <Route path="/signUp" exact element={<SignUp />} />
+            <Route path="/dashboard" exact element={<Home />} />
+            <Route path="/income" exact element={<Income />} />
+            <Route path="/expense" exact element={<Expense />} />
+          </Routes>
+        </Router>
+      </div>
+    </UserProvider>
   )
 }
 
-const Root = ()=>{
+const Root = () => {
   // check if token exist in localstorage
   const isAuthenticated = !!localStorage.getItem("token");
 
