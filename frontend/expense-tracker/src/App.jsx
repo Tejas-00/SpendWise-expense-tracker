@@ -17,7 +17,7 @@ import UserProvider from './context/userContext';
 const App = () => {
   return (
     <UserProvider>
-      <div className='text-3xl font-bold text-purple-500'>
+      <div className='text-xl font-medium text-black'>
         <Router>
           <Routes>
             <Route path="/" element={<Root />} />
