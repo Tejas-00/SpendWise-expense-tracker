@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DashboardLayout from '../../components/layouts/DashboardLayout'
 import { useUserAuth } from '../../hooks/useUserAuth'
 import { useNavigate } from 'react-router-dom'
@@ -30,6 +30,13 @@ const Home = () => {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    fetchDashboardData();
+  
+    return () => {};
+  }, [])
+  
 
   return (
     <DashboardLayout activeMenu="Dashboard">
