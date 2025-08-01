@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../utils/axiosInstance'
 import { API_PATH } from '../../utils/apiPath'
 import InfoCard from '../../components/Cards/InfoCard'
-import { addThounsandSeparator } from "../../utils/helper.js"
+import { addThousandSeparator } from "../../utils/helper.js"
 
 import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu'
 import { IoMdCard } from "react-icons/io"
@@ -25,6 +25,8 @@ const Home = () => {
 
     try {
       const response = await axiosInstance.get(`${API_PATH.DASHBOARD.GET_DATA}`)
+      console.log(response)
+      console.log(response.data)
 
       if (response.data) {
         setDashboardData(response.data)
@@ -50,8 +52,27 @@ const Home = () => {
           <InfoCard
             icon={<IoMdCard />}
             label="Total Balance"
-            value={addThounsandSeparator(dashboardData?.totalBalance || 0)}
+            value={addThousandSeparator(dashboardData?.totalBalance || 0)}
             color="bg-primary"
+          />
+          <InfoCard
+            icon={<LuWalletMinimal />}
+            label="Total Income"
+            value={addThousandSeparator(dashboardData?.totalIncome || 0)}
+            color="bg-green-500"
+          />
+          <InfoCard
+            icon={<LuHandCoins />}
+            label="Total Expense"
+            value={addThousandSeparator(dashboardData?.totalExpenses || 0)}
+            color="bg-red-500"
+          />
+        </div>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+          <RecentTransactions
+            transactions = {dashboardData?.recentTransactions}
+            oneeMore = {() => navigate("/expense")}
           />
         </div>
       </div>
