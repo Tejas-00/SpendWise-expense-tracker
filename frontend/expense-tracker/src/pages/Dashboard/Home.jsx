@@ -9,6 +9,7 @@ import { addThousandSeparator } from "../../utils/helper.js"
 
 import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu'
 import { IoMdCard } from "react-icons/io"
+import RecentTransactions from '../../components/Dashboard/RecentTransactions.jsx'
 
 const Home = () => {
   useUserAuth()
@@ -72,7 +73,7 @@ const Home = () => {
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
           <RecentTransactions
             transactions = {dashboardData?.recentTransactions}
-            oneeMore = {() => navigate("/expense")}
+            onSeeMore = {() => navigate("/expense")}
           />
         </div>
       </div>
