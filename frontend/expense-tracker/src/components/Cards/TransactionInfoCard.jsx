@@ -1,7 +1,7 @@
 import React from 'react'
 import { LuTrash2, LuTrendingDown, LuTrendingUp, LuUtensils } from 'react-icons/lu'
 
-const TransactionInfoCard = ({ key, title, icon, date, amount, type, hideDeleteBtn }) => {
+const TransactionInfoCard = ({ title, icon, date, amount, type, hideDeleteBtn }) => {
     return (
         <div className='group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/50'>
             <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full'>
@@ -10,10 +10,10 @@ const TransactionInfoCard = ({ key, title, icon, date, amount, type, hideDeleteB
                     : <LuUtensils />}
             </div>
 
-            <div className=''>
+            <div className='flex-1 flex items-center justify-between'>
                 <div>
-                    <p className=''>{title}</p>
-                    <p className=''>{date}</p>
+                    <p className='text-sm text-gray-700 font-medium'>{title}</p>
+                    <p className='text-xs text-gray-500 mt-1'>{date}</p>
                 </div>
 
                 <div className=''>
@@ -26,7 +26,7 @@ const TransactionInfoCard = ({ key, title, icon, date, amount, type, hideDeleteB
                         <h6 className=''>
                             {type === "income" ? "+" : "-"} ${amount}
                         </h6>
-                        {type == "income" ? <LuTrendingUp /> : <LuTrendingDown />}
+                        {type === "income" ? <LuTrendingUp /> : <LuTrendingDown />}
                     </div>
                 </div>
             </div>
