@@ -19,7 +19,6 @@ userSchema.pre('save', async function (next) { // a Mongoose middleware runs bef
     next(); // Move on and finish saving the user.
 })
 
-
 // compare password
 userSchema.methods.comparePassword = async function (candidatePassword) {
     return await bcryptjs.compare(candidatePassword, this.password)

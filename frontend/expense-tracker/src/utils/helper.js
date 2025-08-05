@@ -22,11 +22,15 @@ export const getInitials = (name) => {
     return initials.toUpperCase();
 }
 
-export const addThousandSeparator = (num) => {
-    if (num == null || isNaN(num)) return "";
-
-    const [integerPart, fractionPart] = num.toString().split(".");
-    const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!d))/g, ",");
+export const addIndianThousandSeparator = (number) => {
+    let [integer, decimal] = number.toString().split(".");
+    let lastThree = integer.slice(-3);
+    let otherNumbers = integer.slice(0, -3);
     
-    return fractionPart ? `${formattedInteger}.${fractionPart}` : formattedInteger
+    if (otherNumbers !== "") {
+        lastThree = "," + lastThree;
+    }
+
+    let formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+    return decimal ? formatted + "." + decimal : formatted;
 }
