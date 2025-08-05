@@ -9,6 +9,7 @@ import { LuHandCoins, LuWalletMinimal } from 'react-icons/lu'
 import { IoMdCard } from "react-icons/io"
 import RecentTransactions from '../../components/Dashboard/RecentTransactions.jsx'
 import { addIndianThousandSeparator } from '../../utils/helper.js'
+import FinanceOverview from '../../components/Dashboard/FinanceOverview.jsx'
 
 const Home = () => {
   useUserAuth()
@@ -72,6 +73,12 @@ const Home = () => {
           <RecentTransactions
             transactions={dashboardData?.recentTransactions}
             onSeeMore={() => navigate("/expense")}
+          />
+
+          <FinanceOverview
+            totalBalance = {dashboardData?.totalBalance || 0}
+            totalIncome = {dashboardData?.totalIncome || 0}
+            totalExpenses = {dashboardData?.totalExpenses || 0}
           />
         </div>
       </div>
