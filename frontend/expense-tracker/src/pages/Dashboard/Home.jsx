@@ -76,7 +76,7 @@ const Home = () => {
           />
 
           <FinanceOverview
-            totalBalance = {dashboardData?.totalBalance || 0}
+            totalBalance= {dashboardData?.totalBalance || 0}
             totalIncome = {dashboardData?.totalIncome || 0}
             totalExpenses = {dashboardData?.totalExpenses || 0}
           />
