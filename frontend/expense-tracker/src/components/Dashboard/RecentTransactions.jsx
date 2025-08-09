@@ -5,7 +5,7 @@ import TransactionInfoCard from '../Cards/TransactionInfoCard';
 
 const RecentTransactions = ({ transactions, onSeeMore }) => {
     console.log('RecentTransactions - transactions:', transactions); // Debug log
-    
+
     return (
         <div className="card">
             <div className="flex items-center justify-between">

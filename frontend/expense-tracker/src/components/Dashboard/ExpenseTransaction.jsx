@@ -16,21 +16,21 @@ const ExpenseTransaction = ({ transactions, onSeeMore }) => {
 
             <div className="mt-6">
                 {
-                transactions && transactions.length > 0 ? (
-                    transactions.slice(0, 5).map((expense) => (
-                        <TransactionInfoCard
-                            key={expense._id}
-                            title={expense.category}
-                            icon={expense.icon}
-                            date={moment(expense.date).format("Do MMM YYYY")}
-                            amount={expense.amount}
-                            type={expense.type}
-                            hideDeleteBtn
-                        />
-                    ))
-                ) : (
-                    <p className="text-gray-500 text-sm">No recent transactions</p>
-                )}
+                    transactions && transactions.length > 0 ? (
+                        transactions.slice(0, 5).map((expense) => (
+                            <TransactionInfoCard
+                                key={expense._id}
+                                title={expense.category}
+                                icon={expense.icon}
+                                date={moment(expense.date).format("Do MMM YYYY")}
+                                amount={expense.amount}
+                                type={expense.type}
+                                hideDeleteBtn
+                            />
+                        ))
+                    ) : (
+                        <p className="text-gray-500 text-sm">No recent transactions</p>
+                    )}
             </div>
         </div>
     )

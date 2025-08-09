@@ -12,6 +12,7 @@ import { addIndianThousandSeparator } from '../../utils/helper.js'
 import FinanceOverview from '../../components/Dashboard/FinanceOverview.jsx'
 import ExpenseTransaction from '../../components/Dashboard/ExpenseTransaction.jsx'
 import Last30DaysExpenses from '../../components/Dashboard/Last30DaysExpenses.jsx'
+import RecentIncomeWithChart from '../../components/Dashboard/RecentIncomeWithChart.jsx'
 
 const Home = () => {
   useUserAuth()
@@ -86,12 +87,17 @@ const Home = () => {
           <ExpenseTransaction
             transactions={dashboardData?.last30DaysExpenses?.transaction || []}
             onSeeMore={() => { navigate("/expense") }}
-          />          
+          />
 
           <Last30DaysExpenses
             data={dashboardData?.last30DaysExpenses?.transaction}
           />
-          
+
+          <RecentIncomeWithChart>
+            data={dashboardData?.last60DaysIncome?.transaction?.slice(0, 4) || []}
+            totalIncome={dashboardData?.totalIncome}
+          </RecentIncomeWithChart>
+
         </div>
       </div>
     </DashboardLayout>

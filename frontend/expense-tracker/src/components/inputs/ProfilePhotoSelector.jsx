@@ -41,7 +41,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
             <input className='hidden' type="file" accept='image/' ref={inputRef} onChange={handleImageChanges} />
 
             {!image ? (
-                <div className='h-20 w-20 flex items-center justify-center bg-purple-100 rounded-full  cursor-pointer relative'  onClick={onChooseFile}>
+                <div className='h-20 w-20 flex items-center justify-center bg-purple-100 rounded-full  cursor-pointer relative' onClick={onChooseFile}>
                     <LuUser className='text-4xl text-primary' />
                     <button className='w-8 h-8 text-xl flex items-center justify-center bg-primary text-white rounded-full absolute -bottom-1 -right-1  cursor-pointer' type='button'>
                         <LuUpload />

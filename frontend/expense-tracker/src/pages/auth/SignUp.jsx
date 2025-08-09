@@ -21,7 +21,7 @@ const SignUp = () => {
 
   const [error, setError] = useState(null)
 
-  const {updateUser} = useContext(UserContext)
+  const { updateUser } = useContext(UserContext)
 
   const handleSignUp = async (e) => {
     e.preventDefault()
@@ -68,7 +68,7 @@ const SignUp = () => {
         updateUser(user)
         navigate("/dashboard");
       }
-    } catch(error) {
+    } catch (error) {
       if (error.response && error.response.data.message) {
         setError(error.response.data.message)
       } else {
