@@ -26,11 +26,20 @@ export const addIndianThousandSeparator = (number) => {
     let [integer, decimal] = number.toString().split(".");
     let lastThree = integer.slice(-3);
     let otherNumbers = integer.slice(0, -3);
-    
+
     if (otherNumbers !== "") {
         lastThree = "," + lastThree;
     }
 
     let formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
     return decimal ? formatted + "." + decimal : formatted;
+}
+
+export const prepareExpenseBarChartData = (data = []) => {
+    const chartData = data.map((item) => ({
+        category: item?.category,
+        amount: item?.amount,
+    }));
+
+    return chartData;
 }
