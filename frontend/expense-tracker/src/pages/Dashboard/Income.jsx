@@ -8,8 +8,11 @@ import AddIncomeForm from '../../components/Income/AddIncomeForm'
 import toast from "react-hot-toast"
 import IncomeList from '../../components/Income/IncomeList'
 import DeleteAlert from '../../components/DeleteAlert'
+import axios from 'axios'
+import { useUserAuth } from '../../hooks/useUserAuth'
 
 const Income = () => {
+  useUserAuth()
 
   const [incomeData, setIncomeData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -69,7 +72,17 @@ const Income = () => {
   }
 
   // Delete Income
-  const deleteIncome = async (id) => { }
+  const deleteIncome = async (id) => {
+    try {
+      await axiosInstance.delete(API_PATH.INCOME.DELETE_INCOME(id))
+
+      setOpenDeleteAlert({ show: false, data: null })
+      toast.success("income details deleted successfully")
+      fetchIncomeDetails();
+    } catch (error) {
+      console.error("Error deleting income", error.response?.data?.message || error.message)
+    }
+  }
 
   // Handle Download Income Details
   const handleDownloadIncomeDetails = async () => { }
@@ -85,8 +98,8 @@ const Income = () => {
   return (
     <DashboardLayout activeMenu="Income">
       <div className='my-5 mx-auto'>
-        <div className='grid grid-cols-1 gap-6 mt-6'>
-          <div className="">
+        <div className='grid grid-cols-1 gap-6'>
+          <div className="flex flex-col gap-6">
             <IncomeOverview
               transactions={incomeData}
               onAddIncome={() => setOpenAddIncomeModal(true)}
