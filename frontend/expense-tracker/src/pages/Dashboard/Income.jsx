@@ -5,6 +5,9 @@ import axiosInstance from '../../utils/axiosInstance'
 import { API_PATH } from '../../utils/apiPath'
 import Modal from '../../components/modal'
 import AddIncomeForm from '../../components/Income/AddIncomeForm'
+import toast from "react-hot-toast"
+import IncomeList from '../../components/Income/IncomeList'
+import DeleteAlert from '../../components/DeleteAlert'
 
 const Income = () => {
 
@@ -34,7 +37,35 @@ const Income = () => {
 
   // Handle Add Income
   const handleAddIncome = async (income) => {
+    const { source, amount, date, icon } = income
 
+    // Validation
+    if (!source.trim()) {
+      toast.error("Source is required.")
+      return
+    }
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      toast.error("Amount should be a valid number greater than 0.");
+      return;
+    }
+    if (!date) {
+      toast.error("Date is required.")
+    }
+
+    try {
+      await axiosInstance.post(API_PATH.INCOME.ADD_INCOME, {
+        source,
+        amount,
+        date,
+        icon
+      })
+
+      setOpenAddIncomeModal(false)
+      toast.success("Income added successfully")
+      fetchIncomeDetails();
+    } catch (error) {
+      console.error("Error adding Income", error.response?.data?.message || error.message)
+    }
   }
 
   // Delete Income
@@ -54,11 +85,18 @@ const Income = () => {
   return (
     <DashboardLayout activeMenu="Income">
       <div className='my-5 mx-auto'>
-        <div className='grid grid-cols-1 gap-6'>
+        <div className='grid grid-cols-1 gap-6 mt-6'>
           <div className="">
             <IncomeOverview
               transactions={incomeData}
               onAddIncome={() => setOpenAddIncomeModal(true)}
+            />
+            <IncomeList
+              transactions={incomeData}
+              onDelete={(id) => {
+                setOpenDeleteAlert({ show: true, data: id })
+              }}
+              onDownload={handleDownloadIncomeDetails}
             />
           </div>
         </div>
@@ -69,6 +107,17 @@ const Income = () => {
           title="Add Income"
         >
           <AddIncomeForm onAddIncome={handleAddIncome} />
+        </Modal>
+
+        <Modal
+          isOpen={openDeleteAlert.show}
+          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+          title="Delete Income"
+        >
+          <DeleteAlert
+            content="Are you sure you want to delete this Income detail?"
+            onDelete={() => deleteIncome(openDeleteAlert.data)}
+          />
         </Modal>
       </div>
     </DashboardLayout>

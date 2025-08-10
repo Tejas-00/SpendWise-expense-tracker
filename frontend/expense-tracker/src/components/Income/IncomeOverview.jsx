@@ -14,7 +14,6 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
         return () => { }
     }, [transactions])
 
-
     return (
         <div className="card">
             <div className="flex items-center justify-between">
@@ -32,7 +31,7 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
             </div>
 
             <div className="mt-10">
-                <CustomBarChart data={chartData} />
+                <CustomBarChart data={chartData} dataKey={"source"} />
             </div>
         </div>
     )

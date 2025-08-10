@@ -1,7 +1,7 @@
 import React from 'react'
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-const CustomBarChart = ({ data }) => {
+const CustomBarChart = ({ data, dataKey }) => {
 
     // function to alter colors
     const getBarColor = (index) => {
@@ -31,6 +31,7 @@ const CustomBarChart = ({ data }) => {
             <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={data}>
                     <CartesianGrid stroke="none" />
+                    <XAxis dataKey={dataKey} tick={{ fontSize: 12, fill: "#555" }} stroke= "none" />
                     <YAxis tick={{ fontSize: 12, fill: "#555" }} />
                     <Tooltip content={CustomToolTip} />
 
