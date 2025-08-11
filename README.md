@@ -152,13 +152,16 @@ CLIENT_URL=http://localhost:5173
 ## Screenshots
 
 ### Auth pages
-![alt text](image.png)![alt text](image-1.png)
+![Register](frontend/expense-tracker/image.png) 
+![Login](frontend/expense-tracker/image-1.png)
 
 ### Dashboard pages
 #### dashboard
-![alt text](image-2.png)
+![dashboard](frontend/expense-tracker/image-2.png)
 #### income
-![alt text](image-3.png)
+![income](frontend/expense-tracker/image-3.png)
+#### expense
+![alt text](frontend/expense-tracker/image-4.png)
 
 ---
 
