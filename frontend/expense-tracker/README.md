@@ -1,12 +1,189 @@
-# React + Vite
+# SpendWise – MERN Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SpendWise is a full-stack MERN application for tracking income and expenses, visualizing financial data, and managing personal finances with ease. It features secure authentication, interactive dashboards, Excel export, and a modern, responsive UI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **User Authentication**  
+   Secure sign-up and login using JWT. User sessions are protected and persisted.
 
-## Expanding the ESLint configuration
+2. **Dashboard Overview**  
+   View total balance, income, and expenses in summary cards, with recent transactions and financial charts.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+3. **Income Management**  
+   - Add, view, and delete income sources.
+   - Download all income data as an Excel file.
+
+4. **Expense Management**  
+   - Add, view, and delete expenses with category-based tracking.
+   - Download all expense data as an Excel file.
+
+5. **Interactive Charts**  
+   Visualize income and expenses with Bar, Pie, and Line charts for better insights.
+
+6. **Recent Transactions**  
+   Quickly access the latest income and expense records.
+
+7. **Reports**  
+   Export income and expense data to Excel for offline analysis.
+
+8. **Mobile Responsive UI**  
+   Works seamlessly across desktops, tablets, and mobile devices.
+
+9. **Intuitive Navigation**  
+   Sidebar menu for easy access to Dashboard, Income, Expenses, and Logout.
+
+10. **Quick Delete**  
+    Hover over income/expense cards to reveal a delete button for easy removal.
+
+---
+
+## Tech Stack
+
+- **Frontend:** React, Vite, Tailwind CSS, Recharts, Axios, React Router, Emoji Picker  
+- **Backend:** Node.js, Express, MongoDB, Mongoose, JWT, Multer, XLSX  
+- **Authentication:** JWT (JSON Web Tokens)  
+- **File Uploads:** Multer (for profile images)  
+- **Excel Export:** XLSX
+
+---
+
+## Project Structure
+
+```
+backend/
+  config/
+  controller/
+  middlewares/
+  models/
+  routes/
+  uploads/
+  .env.example
+  server.js
+
+frontend/
+  expense-tracker/
+    src/
+      components/
+      context/
+      hooks/
+      pages/
+      utils/
+    index.html
+    package.json
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js & npm
+- MongoDB database
+
+### Backend Setup
+
+1. **Install dependencies:**
+   ```sh
+   cd backend
+   npm install
+   ```
+
+2. **Configure environment variables:**  
+   Copy `.env.example` to `.env` and fill in your MongoDB URI and JWT secret.
+
+3. **Start the backend server:**
+   ```sh
+   npm run dev
+   ```
+   The backend runs on `http://localhost:8000` by default.
+
+### Frontend Setup
+
+1. **Install dependencies:**
+   ```sh
+   cd frontend/expense-tracker
+   npm install
+   ```
+
+2. **Start the frontend:**
+   ```sh
+   npm run dev
+   ```
+   The frontend runs on `http://localhost:5173` by default.
+
+---
+
+## Usage
+
+- **Sign Up / Login:**  
+  Create an account or log in with your credentials.
+
+- **Dashboard:**  
+  View your financial summary, recent transactions, and charts.
+
+- **Add Income/Expense:**  
+  Use the forms to add new income sources or expenses. Optionally, pick an emoji icon.
+
+- **Delete:**  
+  Hover over a transaction card to reveal the delete button.
+
+- **Export:**  
+  Download your income or expense data as Excel files.
+
+- **Profile Image:**  
+  Upload a profile picture during sign-up.
+
+---
+
+## Environment Variables
+
+Backend `.env` example:
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=8000
+CLIENT_URL=http://localhost:5173
+```
+
+---
+
+## Screenshots
+
+### Auth pages
+![alt text](image.png)![alt text](image-1.png)
+
+### Dashboard pages
+![alt text](image-2.png)![alt text](image-3.png)
+
+---
+
+## License
+
+MIT
+
+---
+
+## Acknowledgements
+
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Recharts](https://recharts.org/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [JWT](https://jwt.io/)
+- [Multer](https://github.com/expressjs/multer)
+- [XLSX](https://github.com/SheetJS/sheetjs)
+
+---
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+**SpendWise –
