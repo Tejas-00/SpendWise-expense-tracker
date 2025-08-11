@@ -155,7 +155,10 @@ CLIENT_URL=http://localhost:5173
 ![alt text](image.png)![alt text](image-1.png)
 
 ### Dashboard pages
-![alt text](image-2.png)![alt text](image-3.png)
+#### dashboard
+![alt text](image-2.png)
+#### income
+![alt text](image-3.png)
 
 ---
 
