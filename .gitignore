@@ -8,6 +8,12 @@
 # Dependencies
 node_modules/
 */node_modules/
+backend/node_modules/
+backend/uploads/
+
+# Exported Excel files
+backend/expense_details
+backend/income_details
 
 # Logs
 logs
