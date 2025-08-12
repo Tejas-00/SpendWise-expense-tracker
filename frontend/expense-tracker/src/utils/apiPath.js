@@ -1,4 +1,6 @@
-export const BASE_URL = import.meta.env.SERVER_URL;
+// require("dotenv").config()
+
+export const BASE_URL = `https://spendwise-expense-tracker-m5n4.onrender.com/`
 
 export const API_PATH = {
     AUTH: {
