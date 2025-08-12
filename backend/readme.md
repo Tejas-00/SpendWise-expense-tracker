@@ -1,78 +1,142 @@
-### ✅ 1. **express**
-* **What it does**: Express is a fast, minimal web framework for Node.js.
-* **Use**: Helps you create APIs, handle routes (URLs), and manage HTTP requests easily.
-* **Example**: Creating a server, defining routes like `/login`, `/register`.
+# SpendWise Backend – MERN Expense Tracker
 
-### ✅ 2. **jsonwebtoken**
-* **What it does**: Allows you to create and verify **JWT tokens**.
-* **Use**: Used in authentication to securely identify users (e.g., after login).
-* **Example**: You generate a token on login and verify it on protected routes.
+This is the backend API for SpendWise, a secure and feature-rich expense tracker built with Node.js, Express, and MongoDB. It handles user authentication, income and expense management, dashboard analytics, file uploads, and Excel report exports.
 
-### ✅ 3. **mongoose**
-* **What it does**: An ODM (Object Data Modeling) library for MongoDB.
-* **Use**: Helps you interact with MongoDB using JavaScript/Node.js easily.
-* **Example**: Define schemas for collections like `User`, `Product`, etc.
+---
 
-### ✅ 4. **dotenv**
-* **What it does**: Loads environment variables from a `.env` file into `process.env`.
-* **Use**: Keeps your secrets (like DB URI, JWT secret) out of your codebase.
-* **Example**: `DB_URI=mongodb://localhost/mydb` inside `.env`
+## Features
 
-### ✅ 5. **cors**
-* **What it does**: Enables **Cross-Origin Resource Sharing** in your API.
-* **Use**: Allows your server to accept requests from different origins (e.g., frontend at a different port/domain).
-* **Example**: A React frontend making API calls to a Node.js backend.
+- **JWT Authentication:** Secure user registration and login.
+- **Income & Expense Management:** Add, view, and delete income/expense records.
+- **Dashboard Analytics:** Get total balance, income, expenses, and recent transactions.
+- **Excel Export:** Download income and expense data as Excel files.
+- **Profile Image Upload:** Upload and store user profile images.
+- **RESTful API:** Well-structured endpoints for all operations.
+- **Middleware:** Authentication and file upload middleware for security and convenience.
 
-### ✅ 6. **bcryptjs**
-* **What it does**: Library to **hash passwords** securely.
-* **Use**: Hash user passwords before saving them to the database.
-* **Example**: `bcrypt.hash(password)` before saving, `bcrypt.compare()` during login.
+---
 
-### ✅ 7. **multer**
-* **What it does**: Middleware to handle file uploads in Node.js.
-* **Use**: Allows users to upload images, PDFs, etc., to your server.
-* **Example**: A user uploading a profile picture or document.
+## Project Structure
 
-### ✅ 8. **xlsx**
-* **What it does**: Allows reading and writing Excel files (`.xlsx`, `.xls`).
-* **Use**: Import/export Excel sheets in your application.
-* **Example**: Downloading a report or reading an uploaded Excel sheet.
+```
+backend/
+│
+├── config/
+│   └── db.js
+├── controller/
+│   ├── authController.js
+│   ├── dashboardController.js
+│   ├── expenseController.js
+│   └── incomeController.js
+├── middlewares/
+│   ├── authMiddleware.js
+│   └── uploadMiddleware.js
+├── models/
+│   ├── Expense.js
+│   ├── Income.js
+│   └── User.js
+├── routes/
+│   ├── authRoutes.js
+│   ├── dashboardRoutes.js
+│   ├── expenseRoutes.js
+│   └── incomeRoutes.js
+├── uploads/
+│   └── [profile images]
+├── .env
+├── .env.example
+├── package.json
+├── server.js
+└── readme.md
+```
 
+---
 
+## Getting Started
 
+### Prerequisites
 
+- Node.js & npm
+- MongoDB database (local or [MongoDB Atlas](https://www.mongodb.com/atlas/database))
 
-*] node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+### Installation
 
-This command generates a secure random string (128-character hex) using Node.js's built-in crypto module.
+1. **Clone the repository:**
+   ```sh
+   git clone <repo-url>
+   cd backend
+   ```
 
-🔐 It's commonly used for: JWT secrets
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
 
+3. **Configure environment variables:**
+   - Copy `.env.example` to `.env` and fill in your values:
+     ```
+     MONGO_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret
+     PORT=8000
+     CLIENT_URL=http://localhost:5173
+     ```
 
+4. **Start the server:**
+   ```sh
+   npm run dev
+   ```
+   The backend will run on `http://localhost:8000` by default.
 
+---
 
-1. Main Entry Point
- . server.js:
-Sets up the Express server.
-Loads environment variables.
-Connects to the database via config/db.js.
-Applies CORS and JSON middleware.
-Mounts authentication routes at /api/v1/auth.
-Starts the server on the specified port.
-2. Directory Structure & Responsibilities
- . controller/
-Contains business logic for handling requests.
-Example: authController.js handles authentication (register, login, get user info).
- . routes/
-Defines API endpoints and connects them to controller functions.
-Example: authRoutes.js sets up /register, /login, and /getUser endpoints.
- . models/
-Defines database schemas/models (likely using Mongoose for MongoDB).
-Files: User.js, Income.js, Expense.js (all currently empty).
- . middlewares/
-Contains middleware functions for request processing.
-Example: authMiddleware.js (currently empty, but likely for authentication/authorization logic).
- . config/
-Configuration files, e.g., db.js for database connection logic.
-uploads/
-Presumably for storing uploaded files (not explored in detail).
+## API Endpoints
+
+### Auth
+- `POST /api/auth/register` – Register a new user
+- `POST /api/auth/login` – Login and receive JWT
+
+### Dashboard
+- `GET /api/dashboard/overview` – Get balance, income, expenses, and recent transactions
+
+### Income
+- `POST /api/income` – Add income
+- `GET /api/income` – Get all income
+- `DELETE /api/income/:id` – Delete income
+- `GET /api/income/export` – Export income as Excel
+
+### Expense
+- `POST /api/expense` – Add expense
+- `GET /api/expense` – Get all expenses
+- `DELETE /api/expense/:id` – Delete expense
+- `GET /api/expense/export` – Export expenses as Excel
+
+### Profile Image Upload
+- `POST /api/auth/upload` – Upload profile image
+
+---
+
+## Environment Variables
+
+See `.env.example` for required variables:
+```
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=8000
+CLIENT_URL=http://localhost:5173
+```
+
+---
+
+## License
+
+MIT
+
+---
+
+## Acknowledgements
+
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [JWT](https://jwt.io/)
+- [Multer](https://github.com/expressjs/multer)
+-
