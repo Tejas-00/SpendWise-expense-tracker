@@ -1,3 +1,10 @@
+https://spend-wise-expense-tracker-ee2hz4sej.vercel.app/
+
+https://spend-wise-expe-git-45c3e9-tejassonawane1709-gmailcoms-projects.vercel.app/
+
+https://spend-wise-expense-tracker.vercel.app/
+
+
 Demo account details: email: tejassonawanework@gmail.com   password: 123456
 
 
