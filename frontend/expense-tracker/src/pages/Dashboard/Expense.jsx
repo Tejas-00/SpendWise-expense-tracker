@@ -5,6 +5,7 @@ import { API_PATH } from '../../utils/apiPath'
 import toast from 'react-hot-toast'
 import axiosInstance from '../../utils/axiosInstance'
 import ExpenseOverview from '../../components/Expense/ExpenseOverview'
+import ExpenseFilter from '../../components/Expense/ExpenseFilter'
 import Modal from '../../components/Modal'
 import AddIncomeForm from '../../components/Income/AddIncomeForm'
 import AddExpenseForm from '../../components/Expense/AddExpenseForm'
@@ -18,6 +19,8 @@ const Expense = () => {
   const [loading, setLoading] = useState(false)
   const [openDeleteAlert, setOpenDeleteAlert] = useState({ show: false, data: null })
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false)
+  const [fromDate, setFromDate] = useState("")
+  const [toDate, setToDate] = useState("")
 
   // Get All Expense Details
   const fetchExpenseDetails = async () => {
@@ -104,6 +107,35 @@ const Expense = () => {
     }
   }
 
+  // Filter expenses by date range
+  const getFilteredExpenses = () => {
+    if (!fromDate && !toDate) return expenseData;
+
+    return expenseData.filter((expense) => {
+      const expenseDate = new Date(expense.date);
+      
+      if (fromDate && toDate) {
+        const from = new Date(fromDate);
+        from.setHours(0, 0, 0, 0);
+        const to = new Date(toDate);
+        to.setHours(23, 59, 59, 999);
+        return expenseDate >= from && expenseDate <= to;
+      } else if (fromDate) {
+        const from = new Date(fromDate);
+        from.setHours(0, 0, 0, 0);
+        return expenseDate >= from;
+      } else if (toDate) {
+        const to = new Date(toDate);
+        to.setHours(23, 59, 59, 999);
+        return expenseDate <= to;
+      }
+      
+      return true;
+    });
+  }
+
+  const filteredExpenses = getFilteredExpenses();
+
   useEffect(() => {
     fetchExpenseDetails()
 
@@ -117,12 +149,54 @@ const Expense = () => {
       <div className="my-5 mx-auto">
         <div className="grid grid-cols-1 gap-6">
           <div className="flex flex-col gap-6">
+            {/* Date Range Filter */}
+            <div className="card">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1">
+                  <label className='text-[13px] text-slate-800 dark:text-white'>From Date</label>
+                  <div className='input-box'>
+                    <input
+                      type="date"
+                      value={fromDate}
+                      onChange={(e) => setFromDate(e.target.value)}
+                      className='w-full bg-transparent outline-none'
+                    />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <label className='text-[13px] text-slate-800 dark:text-white'>To Date</label>
+                  <div className='input-box'>
+                    <input
+                      type="date"
+                      value={toDate}
+                      onChange={(e) => setToDate(e.target.value)}
+                      className='w-full bg-transparent outline-none'
+                    />
+                  </div>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    className='add-btn add-btn-fill'
+                    onClick={() => {
+                      setFromDate("")
+                      setToDate("")
+                    }}
+                  >
+                    Clear Filter
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <ExpenseOverview
-              transactions={expenseData}
+              transactions={filteredExpenses}
               onExpenseIncome={() => setOpenAddExpenseModal(true)}
             />
+
+            <ExpenseFilter transactions={filteredExpenses} />
+
             <ExpenseList
-              transactions={expenseData}
+              transactions={filteredExpenses}
               onDelete={(id) => {
                 setOpenDeleteAlert({ show: true, data: id })
               }}

@@ -7,14 +7,15 @@ const ExpenseList = ({transactions, onDelete, onDownload}) => {
   return (
     <div className="card">
         <div className="flex items-center justify-between">
-            <h5 className="text-lg">All Expense</h5>
+            <h5 className="text-md font-semibold text-gray-700">All Expenses</h5>
 
             <button className="card-btn" onClick={onDownload}>
-                <LuDownload className='text-base' /> Download
+                <LuDownload className='text-base' />
+                <span className="ml-2 text-sm text-gray-600">Download</span>
             </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {transactions?.map((expense) => (
                 <TransactionInfoCard
                         key={expense._id}
@@ -23,7 +24,7 @@ const ExpenseList = ({transactions, onDelete, onDownload}) => {
                         date={moment(expense.date).format("Do MMM YYYY")}
                         amount={expense.amount}
                         type="expense"
-                        onDelete={() => onDelete(income._id)}
+                        onDelete={() => onDelete(expense._id)}
                     />
             ))}
         </div>

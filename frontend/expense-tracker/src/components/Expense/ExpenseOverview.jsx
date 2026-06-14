@@ -18,9 +18,9 @@ const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
         <div className="card">
             <div className="flex items-center justify-between">
                 <div className="">
-                    <h5 className="text-lg">Expense Overview</h5>
-                    <p className="text-xs md:text-sm text-gray-400 mt-0.5">
-                        Track your spending trends over time and gain insights over your money.
+                    <h5 className="text-md font-semibold text-gray-700">Expense Overview</h5>
+                    <p className="text-sm text-gray-500 mt-0.5">
+                        Track your spending trends over time and gain insights into your money.
                     </p>
                 </div>
 
@@ -30,7 +30,7 @@ const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
                 </button>
             </div>
 
-            <div className="mt-10">
+            <div className="mt-8">
                 <CustomLineChart data={chartData} />
             </div>
         </div>

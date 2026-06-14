@@ -33,7 +33,7 @@ const CustomLineChart = ({ data }) => {
                     </defs>
 
                     <CartesianGrid stroke="none" />
-                    <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#555" }} stroke="none" />
+                    <XAxis dataKey="index" tick={{ fontSize: 12, fill: "#555" }} stroke="none" tickFormatter={(index) => data[index]?.month || ''} />
                     <YAxis tick={{ fontSize: 12, fill: "#555" }} />
                     <Tooltip content={CustomToolTip} />
 
