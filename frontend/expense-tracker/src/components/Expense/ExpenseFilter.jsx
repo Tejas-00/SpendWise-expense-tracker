@@ -59,9 +59,10 @@ const ExpenseFilter = ({ transactions = [] }) => {
 
   const renderRow = (label) => {
     const value = totals[label] || 0
-    const percent = totalSum > 0 ? ((value / totalSum) * 100).toFixed(2) : '0.00'
+    const isChecked = checkedCategories[label]
+    const percent = isChecked && totalSum > 0 ? ((value / totalSum) * 100).toFixed(2) : '0.00'
     const percentNum = parseFloat(percent)
-    const barWidth = `${Math.max(0, Math.min(100, percentNum))}%`
+    const barWidth = isChecked ? `${Math.max(0, Math.min(100, percentNum))}%` : '0%'
     const Icon = ICONS[label] || ICONS.Total
 
     return (
