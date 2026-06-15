@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LuHeart, LuLayers, LuPiggyBank, LuShieldCheck } from 'react-icons/lu'
 import { addIndianThousandSeparator } from '../../utils/helper'
 
@@ -11,6 +11,19 @@ const ICONS = {
 }
 
 const ExpenseFilter = ({ transactions = [] }) => {
+  const [checkedCategories, setCheckedCategories] = useState({
+    Need: true,
+    Desire: true,
+    Saving: true,
+  })
+
+  const handleCheckboxChange = (label) => {
+    setCheckedCategories((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }))
+  }
+
   const totals = { Need: 0, Desire: 0, Saving: 0 }
 
   transactions.forEach((t) => {
@@ -37,7 +50,12 @@ const ExpenseFilter = ({ transactions = [] }) => {
     }
   })
 
-  const totalSum = totals.Need + totals.Desire + totals.Saving
+  const totalSum = LABELS.reduce((sum, label) => {
+    if (checkedCategories[label]) {
+      return sum + totals[label]
+    }
+    return sum
+  }, 0)
 
   const renderRow = (label) => {
     const value = totals[label] || 0
@@ -50,6 +68,12 @@ const ExpenseFilter = ({ transactions = [] }) => {
       <div key={label} className="rounded-2xl bg-slate-50 p-3">
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
+            <input
+              type="checkbox"
+              checked={checkedCategories[label]}
+              onChange={() => handleCheckboxChange(label)}
+              className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+            />
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-800">
               <Icon className="text-base" />
             </div>
