@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { LuHeart, LuLayers, LuPiggyBank, LuShieldCheck } from 'react-icons/lu'
+import { LuChevronDown, LuHeart, LuLayers, LuPiggyBank, LuShieldCheck } from 'react-icons/lu'
 import { addIndianThousandSeparator } from '../../utils/helper'
 
 const LABELS = ["Need", "Desire", "Saving"]
@@ -16,9 +16,21 @@ const ExpenseFilter = ({ transactions = [] }) => {
     Desire: true,
     Saving: true,
   })
+  const [expandedSections, setExpandedSections] = useState({
+    Need: false,
+    Desire: false,
+    Saving: false,
+  })
 
   const handleCheckboxChange = (label) => {
     setCheckedCategories((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }))
+  }
+
+  const toggleSection = (label) => {
+    setExpandedSections((prev) => ({
       ...prev,
       [label]: !prev[label],
     }))
@@ -64,10 +76,19 @@ const ExpenseFilter = ({ transactions = [] }) => {
     const percentNum = parseFloat(percent)
     const barWidth = isChecked ? `${Math.max(0, Math.min(100, percentNum))}%` : '0%'
     const Icon = ICONS[label] || ICONS.Total
+    const isExpanded = expandedSections[label]
+    const categoryItems = transactions.filter((t) => {
+      const candidate = t.classification
+        ? String(t.classification)
+        : t.category && t.category.includes(':')
+          ? t.category.split(':')[0]
+          : t.category || ''
+      return String(candidate).toLowerCase().includes(label.toLowerCase())
+    })
 
     return (
       <div key={label} className="rounded-2xl bg-slate-50 p-3">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <input
               type="checkbox"
@@ -78,17 +99,48 @@ const ExpenseFilter = ({ transactions = [] }) => {
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-800">
               <Icon className="text-base" />
             </div>
-            <p className="text-sm text-slate-900 font-semibold">{label}</p>
+            <div>
+              <p className="text-sm text-slate-900 font-semibold">{label}</p>
+              <p className="text-xs text-slate-500">{categoryItems.length} expense{categoryItems.length === 1 ? '' : 's'}</p>
+            </div>
           </div>
-          <div className="text-right min-w-[7rem]">
-            <p className="text-base text-slate-900 font-semibold">₹ {addIndianThousandSeparator(value)}</p>
-            <p className="text-sm text-slate-500">{percent}%</p>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm text-slate-900 font-semibold">₹ {addIndianThousandSeparator(value)}</p>
+              <p className="text-xs text-slate-500">{percent}%</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => toggleSection(label)}
+              className="flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700"
+            >
+              <span>{isExpanded ? 'Hide' : 'Show'}</span>
+              <LuChevronDown className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+            </button>
           </div>
         </div>
 
         <div className="mt-3 h-2 rounded-full bg-slate-200 overflow-hidden">
           <div className="h-full rounded-full bg-indigo-400 transition-all" style={{ width: barWidth }} />
         </div>
+
+        {isExpanded && (
+          <div className="mt-4 rounded-2xl bg-white border border-slate-200 p-3">
+            {categoryItems.length > 0 ? (
+              categoryItems.map((item) => (
+                <div key={item._id || `${item.category}-${item.date}-${item.amount}`} className="flex items-center justify-between gap-3 py-2 border-b border-slate-100 last:border-b-0">
+                  <div>
+                    <p className="text-sm text-slate-800 font-medium">{item.category || item.classification || 'Unknown'}</p>
+                    <p className="text-xs text-slate-500">{item.date}</p>
+                  </div>
+                  <p className="text-sm text-slate-900 font-semibold">₹ {addIndianThousandSeparator(item.amount)}</p>
+                </div>
+              ))
+            ) : (
+              <p className="text-sm text-slate-500">No {label.toLowerCase()} expenses in this range.</p>
+            )}
+          </div>
+        )}
       </div>
     )
   }
