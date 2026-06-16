@@ -34,6 +34,10 @@ app.use("/api/v1/dashboard", dashboardRoutes);
 // Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.get('/api/v1/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
+
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });

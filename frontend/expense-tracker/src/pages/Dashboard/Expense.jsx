@@ -87,19 +87,38 @@ const Expense = () => {
     }
   }
 
-  // Handle Download Expense Details
-  const handleDownloadExpenseDetails = async () => {
-    try {
-      const response = await axiosInstance.get(API_PATH.EXPENSE.DOWNLOAD_EXPENSE, { responseType: "blob" })
+  const generateExpenseCsv = (expenses) => {
+    const headers = ["Category", "Amount", "Date"]
+    const rows = expenses.map((item) => [
+      item.category || "",
+      item.amount ?? "",
+      item.date ? new Date(item.date).toISOString().split('T')[0] : ""
+    ])
 
-      // Create a URL for Blob
-      const url = window.URL.createObjectURL(new Blob([response.data]))
+    const csvContent = [headers, ...rows]
+      .map((row) => row.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(','))
+      .join('\r\n')
+
+    return csvContent
+  }
+
+  // Handle Download Expense Details
+  const handleDownloadExpenseDetails = () => {
+    try {
+      if (filteredExpenses.length === 0) {
+        toast.error("No expenses available to download")
+        return
+      }
+
+      const csvData = generateExpenseCsv(filteredExpenses)
+      const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" })
+      const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
-      link.href = url;
-      link.setAttribute("download", "expense_details.xlsx")
+      link.href = url
+      link.setAttribute("download", "expense_details.csv")
       document.body.appendChild(link)
       link.click()
-      link.parentNode.removeChild(link)
+      document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error("Error downloading expense details", error.message)

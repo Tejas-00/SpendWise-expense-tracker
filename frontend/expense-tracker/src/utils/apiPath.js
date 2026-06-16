@@ -3,6 +3,7 @@
 export const BASE_URL = import.meta.env.VITE_SERVER_URL
 
 export const API_PATH = {
+    HEALTH: "/api/v1/health",
     AUTH: {
         LOGIN: "/api/v1/auth/login",
         REGISTER: "/api/v1/auth/register",

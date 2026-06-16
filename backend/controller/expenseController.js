@@ -56,7 +56,26 @@ exports.downloadExpenseExcel = async (req, res) => {
     const userId = req.user.id
 
     try {
-        const expense = await Expense.find({ userId }).sort({ date: -1 })
+        const { fromDate, toDate } = req.query
+        const query = { userId }
+
+        if (fromDate || toDate) {
+            query.date = {}
+
+            if (fromDate) {
+                const from = new Date(fromDate)
+                from.setHours(0, 0, 0, 0)
+                query.date.$gte = from
+            }
+
+            if (toDate) {
+                const to = new Date(toDate)
+                to.setHours(23, 59, 59, 999)
+                query.date.$lte = to
+            }
+        }
+
+        const expense = await Expense.find(query).sort({ date: -1 })
 
         // prepare data for excel
         const data = expense.map((item) => ({
@@ -68,8 +87,11 @@ exports.downloadExpenseExcel = async (req, res) => {
         const wb = xlsx.utils.book_new();
         const ws = xlsx.utils.json_to_sheet(data);
         xlsx.utils.book_append_sheet(wb, ws, "Expense")
-        xlsx.writeFile(wb, 'expense_details.xlsx')
-        res.download('expense_details.xlsx')
+        const buffer = xlsx.write(wb, { bookType: 'xlsx', type: 'buffer' })
+
+        res.setHeader('Content-Disposition', 'attachment; filename="expense_details.xlsx"')
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        res.send(buffer)
 
     } catch (err) {
         res.status(500).json({ message: "server error", error: err.message })

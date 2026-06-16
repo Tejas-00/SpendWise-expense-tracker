@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import {
   BrowserRouter as Router,
@@ -14,8 +14,22 @@ import Income from "../src/pages/Dashboard/Income";
 import Expense from "../src/pages/Dashboard/Expense";
 import UserProvider from './context/userContext';
 import {Toaster} from "react-hot-toast"
+import axiosInstance from "./utils/axiosInstance.js"
+import { API_PATH } from "./utils/apiPath.js"
 
 const App = () => {
+  useEffect(() => {
+    const wakeBackend = async () => {
+      try {
+        await axiosInstance.get(API_PATH.HEALTH)
+      } catch (error) {
+        console.warn("Backend wake-up attempt failed:", error.message || error)
+      }
+    }
+
+    wakeBackend()
+  }, [])
+
   return (
     <UserProvider>
       <div className='text-xl font-medium text-black'>
