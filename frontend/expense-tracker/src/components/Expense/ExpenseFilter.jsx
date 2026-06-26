@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { LuChevronDown, LuHeart, LuLayers, LuPiggyBank, LuShieldCheck } from 'react-icons/lu'
+import { LuChevronDown, LuHeart, LuLayers, LuPiggyBank, LuShieldCheck, LuUsers } from 'react-icons/lu'
 import { addIndianThousandSeparator } from '../../utils/helper'
 
-const LABELS = ["Need", "Desire", "Saving"]
+const LABELS = ["Need", "Desire", "Saving", "Family Support"]
 const ICONS = {
   Need: LuShieldCheck,
   Desire: LuHeart,
   Saving: LuPiggyBank,
+  "Family Support": LuUsers,
   Total: LuLayers,
 }
 
@@ -15,11 +16,13 @@ const ExpenseFilter = ({ transactions = [] }) => {
     Need: true,
     Desire: true,
     Saving: true,
+    "Family Support": true,
   })
   const [expandedSections, setExpandedSections] = useState({
     Need: false,
     Desire: false,
     Saving: false,
+    "Family Support": false,
   })
 
   const handleCheckboxChange = (label) => {
@@ -36,7 +39,7 @@ const ExpenseFilter = ({ transactions = [] }) => {
     }))
   }
 
-  const totals = { Need: 0, Desire: 0, Saving: 0 }
+  const totals = { Need: 0, Desire: 0, Saving: 0, "Family Support": 0 }
 
   transactions.forEach((t) => {
     const amount = Number(t.amount) || 0
@@ -56,6 +59,8 @@ const ExpenseFilter = ({ transactions = [] }) => {
       totals.Desire += amount
     } else if (candidate.includes('save') || candidate.includes('saving') || candidate.includes('invest')) {
       totals.Saving += amount
+    } else if (candidate.includes('family') || candidate.includes('support') || candidate.includes('family support')) {
+      totals["Family Support"] += amount
     } else {
       // default to Desire when nothing matches
       totals.Desire += amount
@@ -83,7 +88,13 @@ const ExpenseFilter = ({ transactions = [] }) => {
         : t.category && t.category.includes(':')
           ? t.category.split(':')[0]
           : t.category || ''
-      return String(candidate).toLowerCase().includes(label.toLowerCase())
+      const candidateText = String(candidate).toLowerCase()
+
+      if (label === 'Family Support') {
+        return candidateText.includes('family') || candidateText.includes('support') || candidateText.includes('family support')
+      }
+
+      return candidateText.includes(label.toLowerCase())
     })
 
     return (
