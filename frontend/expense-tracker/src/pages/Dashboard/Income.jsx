@@ -18,6 +18,7 @@ const Income = () => {
   const [loading, setLoading] = useState(false)
   const [openDeleteAlert, setOpenDeleteAlert] = useState({ show: false, data: null })
   const [openAddIncomeModal, setOpenAddIncomeModal] = useState(false)
+  const [editingIncome, setEditingIncome] = useState(null)
 
   // Get All Income Details
   const fetchIncomeDetails = async () => {
@@ -68,6 +69,25 @@ const Income = () => {
       fetchIncomeDetails();
     } catch (error) {
       console.error("Error adding Income", error.response?.data?.message || error.message)
+    }
+  }
+
+  // Handle Update Income
+  const handleUpdateIncome = async (id, income) => {
+    try {
+      await axiosInstance.put(API_PATH.INCOME.UPDATE_INCOME(id), income)
+      setOpenAddIncomeModal(false)
+      setEditingIncome(null)
+      toast.success("Income updated successfully")
+      fetchIncomeDetails()
+    } catch (error) {
+      console.error("Error updating Income", {
+        message: error.response?.data?.message || error.message,
+        status: error.response?.status,
+        url: error.config?.url,
+        data: error.response?.data,
+      })
+      toast.error(error.response?.data?.message || error.message || "Failed to update income")
     }
   }
 
@@ -127,6 +147,13 @@ const Income = () => {
                 setOpenDeleteAlert({ show: true, data: id })
               }}
               onDownload={handleDownloadIncomeDetails}
+              onEdit={(id) => {
+                const item = incomeData.find((e) => e._id === id)
+                if (item) {
+                  setEditingIncome(item)
+                  setOpenAddIncomeModal(true)
+                }
+              }}
             />
           </div>
         </div>
@@ -136,7 +163,11 @@ const Income = () => {
           onClose={() => setOpenAddIncomeModal(false)}
           title="Add Income"
         >
-          <AddIncomeForm onAddIncome={handleAddIncome} />
+          <AddIncomeForm
+            onAddIncome={handleAddIncome}
+            onUpdateIncome={handleUpdateIncome}
+            initialData={editingIncome}
+          />
         </Modal>
 
         <Modal

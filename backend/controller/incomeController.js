@@ -51,6 +51,26 @@ exports.deleteIncome = async (req, res) => {
     }
 }
 
+// Update Income Source
+exports.updateIncome = async (req, res) => {
+    try {
+        const { icon, source, amount, date } = req.body
+
+        const update = {}
+        if (icon !== undefined) update.icon = icon
+        if (source !== undefined) update.source = source
+        if (amount !== undefined) update.amount = amount
+        if (date !== undefined) update.date = new Date(date)
+
+        const updated = await Income.findByIdAndUpdate(req.params.id, update, { new: true })
+        if (!updated) return res.status(404).json({ message: 'Income not found' })
+
+        res.json(updated)
+    } catch (err) {
+        res.status(500).json({ message: 'server error', error: err.message })
+    }
+}
+
 // Download Income Excel
 exports.downloadIncomeExcel = async (req, res) => {
     const userId = req.user.id

@@ -51,6 +51,26 @@ exports.deleteExpense = async (req, res) => {
     }
 }
 
+// Update Expense Source
+exports.updateExpense = async (req, res) => {
+    try {
+        const { icon, category, amount, date } = req.body
+
+        const update = {}
+        if (icon !== undefined) update.icon = icon
+        if (category !== undefined) update.category = category
+        if (amount !== undefined) update.amount = amount
+        if (date !== undefined) update.date = new Date(date)
+
+        const updated = await Expense.findByIdAndUpdate(req.params.id, update, { new: true })
+        if (!updated) return res.status(404).json({ message: 'Expense not found' })
+
+        res.json(updated)
+    } catch (err) {
+        res.status(500).json({ message: 'server error', error: err.message })
+    }
+}
+
 // Download Expense Excel
 exports.downloadExpenseExcel = async (req, res) => {
     const userId = req.user.id

@@ -19,6 +19,7 @@ const Expense = () => {
   const [loading, setLoading] = useState(false)
   const [openDeleteAlert, setOpenDeleteAlert] = useState({ show: false, data: null })
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false)
+  const [editingExpense, setEditingExpense] = useState(null)
   const [fromDate, setFromDate] = useState("")
   const [toDate, setToDate] = useState("")
 
@@ -71,6 +72,25 @@ const Expense = () => {
       fetchExpenseDetails();
     } catch (error) {
       console.error("Error adding Expense", error.response?.data?.message || error.message)
+    }
+  }
+
+  // Handle Update Expense
+  const handleUpdateExpense = async (id, expense) => {
+    try {
+      await axiosInstance.put(API_PATH.EXPENSE.UPDATE_EXPENSE(id), expense)
+      setOpenAddExpenseModal(false)
+      setEditingExpense(null)
+      toast.success("Expense updated successfully")
+      fetchExpenseDetails()
+    } catch (error) {
+      console.error("Error updating Expense", {
+        message: error.response?.data?.message || error.message,
+        status: error.response?.status,
+        url: error.config?.url,
+        data: error.response?.data,
+      })
+      toast.error(error.response?.data?.message || error.message || "Failed to update expense")
     }
   }
 
@@ -220,6 +240,13 @@ const Expense = () => {
                 setOpenDeleteAlert({ show: true, data: id })
               }}
               onDownload={handleDownloadExpenseDetails}
+              onEdit={(id) => {
+                const item = expenseData.find((e) => e._id === id)
+                if (item) {
+                  setEditingExpense(item)
+                  setOpenAddExpenseModal(true)
+                }
+              }}
             />
           </div>
         </div>
@@ -229,7 +256,11 @@ const Expense = () => {
           onClose={() => setOpenAddExpenseModal(false)}
           title="Add Expense"
         >
-          <AddExpenseForm onAddExpense={handleAddExpense} />
+          <AddExpenseForm
+            onAddExpense={handleAddExpense}
+            onUpdateExpense={handleUpdateExpense}
+            initialData={editingExpense}
+          />
         </Modal>
 
         <Modal

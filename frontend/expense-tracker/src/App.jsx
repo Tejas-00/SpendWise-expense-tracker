@@ -7,11 +7,11 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import Login from "../src/pages/auth/Login";
-import SignUp from "../src/pages/auth/SignUp";
-import Home from "../src/pages/Dashboard/Home";
-import Income from "../src/pages/Dashboard/Income";
-import Expense from "../src/pages/Dashboard/Expense";
+import Login from "./pages/auth/Login";
+import SignUp from "./pages/auth/SignUp";
+import Home from "./pages/Dashboard/Home";
+import Income from "./pages/Dashboard/Income";
+import Expense from "./pages/Dashboard/Expense";
 import UserProvider from './context/userContext';
 import {Toaster} from "react-hot-toast"
 import axiosInstance from "./utils/axiosInstance.js"
