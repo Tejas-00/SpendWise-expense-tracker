@@ -13,6 +13,11 @@ import ExpenseList from '../../components/Expense/ExpenseList'
 import DeleteAlert from '../../components/DeleteAlert'
 import QuickieManager from '../../components/Expense/QuickieManager'
 
+const getFirstDayOfCurrentMonth = () => {
+  const today = new Date()
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-01`
+}
+
 const Expense = () => {
   useUserAuth()
 
@@ -21,7 +26,7 @@ const Expense = () => {
   const [openDeleteAlert, setOpenDeleteAlert] = useState({ show: false, data: null })
   const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false)
   const [editingExpense, setEditingExpense] = useState(null)
-  const [fromDate, setFromDate] = useState("")
+  const [fromDate, setFromDate] = useState(getFirstDayOfCurrentMonth)
   const [toDate, setToDate] = useState("")
   const [quickies, setQuickies] = useState([])
   const [openQuickiesModal, setOpenQuickiesModal] = useState(false)
