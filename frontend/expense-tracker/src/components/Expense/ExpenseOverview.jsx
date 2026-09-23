@@ -3,7 +3,7 @@ import { prepareExpenseLineChartData } from '../../utils/helper'
 import { LuPlus } from 'react-icons/lu'
 import CustomLineChart from '../Charts/CustomLineChart'
 
-const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
+const ExpenseOverview = ({ transactions, onExpenseIncome, onQuickies }) => {
 
     const [chartData, setChartData] = useState([])
 
@@ -24,10 +24,16 @@ const ExpenseOverview = ({ transactions, onExpenseIncome }) => {
                     </p>
                 </div>
 
-                <button className="add-btn" onClick={onExpenseIncome}>
-                    <LuPlus className='text-lg' />
-                    Add Expense
-                </button>
+                <div className="flex gap-2">
+                    <button className="add-btn" onClick={onQuickies}>
+                        <LuPlus className='text-lg' />
+                        Add Quickie
+                    </button>
+                    <button className="add-btn add-btn-fill" onClick={onExpenseIncome}>
+                        <LuPlus className='text-lg' />
+                        Add Expense
+                    </button>
+                </div>
             </div>
 
             <div className="mt-8">

@@ -2,12 +2,20 @@ import React, { useState } from 'react'
 import Input from '../inputs/Input'
 import EmojiPickerPopUp from '../EmojiPickerPopUp'
 
+const getToday = () => {
+    const today = new Date()
+    const month = String(today.getMonth() + 1).padStart(2, '0')
+    const day = String(today.getDate()).padStart(2, '0')
+
+    return `${today.getFullYear()}-${month}-${day}`
+}
+
 const AddExpenseForm = ({ onAddExpense, onUpdateExpense, initialData }) => {
 
     const [income, setIncome] = useState({
         category: initialData?.category || "",
         amount: initialData?.amount || "",
-        date: initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "",
+        date: initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : getToday(),
         icon: initialData?.icon || "",
     })
 

@@ -11,6 +11,7 @@ import AddIncomeForm from '../../components/Income/AddIncomeForm'
 import AddExpenseForm from '../../components/Expense/AddExpenseForm'
 import ExpenseList from '../../components/Expense/ExpenseList'
 import DeleteAlert from '../../components/DeleteAlert'
+import QuickieManager from '../../components/Expense/QuickieManager'
 
 const Expense = () => {
   useUserAuth()
@@ -22,6 +23,8 @@ const Expense = () => {
   const [editingExpense, setEditingExpense] = useState(null)
   const [fromDate, setFromDate] = useState("")
   const [toDate, setToDate] = useState("")
+  const [quickies, setQuickies] = useState([])
+  const [openQuickiesModal, setOpenQuickiesModal] = useState(false)
 
   // Get All Expense Details
   const fetchExpenseDetails = async () => {
@@ -39,6 +42,70 @@ const Expense = () => {
       console.error(error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const fetchQuickies = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATH.QUICKIE.GET_ALL)
+      setQuickies(response.data || [])
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to load quickies")
+    }
+  }
+
+  const getToday = () => {
+    const today = new Date()
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+  }
+
+  const handleAddQuickieExpense = async (quickie, amount) => {
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      toast.error("Amount should be a valid number greater than 0.")
+      return
+    }
+
+    try {
+      await axiosInstance.post(API_PATH.EXPENSE.ADD_EXPENSE, {
+        category: quickie.category,
+        amount,
+        date: getToday(),
+        icon: quickie.icon
+      })
+      toast.success(`${quickie.category} added successfully`)
+      fetchExpenseDetails()
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to add expense")
+    }
+  }
+
+  const handleCreateQuickie = async (quickie) => {
+    try {
+      const response = await axiosInstance.post(API_PATH.QUICKIE.CREATE, quickie)
+      setQuickies([response.data, ...quickies])
+      toast.success("Quickie created successfully")
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to create quickie")
+    }
+  }
+
+  const handleUpdateQuickie = async (id, quickie) => {
+    try {
+      const response = await axiosInstance.put(API_PATH.QUICKIE.UPDATE(id), quickie)
+      setQuickies(quickies.map((item) => item._id === id ? response.data : item))
+      toast.success("Quickie updated successfully")
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update quickie")
+    }
+  }
+
+  const handleDeleteQuickie = async (id) => {
+    try {
+      await axiosInstance.delete(API_PATH.QUICKIE.DELETE(id))
+      setQuickies(quickies.filter((item) => item._id !== id))
+      toast.success("Quickie deleted successfully")
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete quickie")
     }
   }
 
@@ -230,6 +297,10 @@ const Expense = () => {
             <ExpenseOverview
               transactions={filteredExpenses}
               onExpenseIncome={() => setOpenAddExpenseModal(true)}
+              onQuickies={() => {
+                fetchQuickies()
+                setOpenQuickiesModal(true)
+              }}
             />
 
             <ExpenseFilter transactions={filteredExpenses} />
@@ -250,6 +321,20 @@ const Expense = () => {
             />
           </div>
         </div>
+
+        <Modal
+          isOpen={openQuickiesModal}
+          onClose={() => setOpenQuickiesModal(false)}
+          title="Quickies"
+        >
+          <QuickieManager
+            quickies={quickies}
+            onAdd={handleAddQuickieExpense}
+            onCreate={handleCreateQuickie}
+            onUpdate={handleUpdateQuickie}
+            onDelete={handleDeleteQuickie}
+          />
+        </Modal>
 
         <Modal
           isOpen={openAddExpenseModal}
