@@ -59,12 +59,7 @@ const Expense = () => {
     }
   }
 
-  const getToday = () => {
-    const today = new Date()
-    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
-  }
-
-  const handleAddQuickieExpense = async (quickie, amount) => {
+  const handleAddQuickieExpense = async (quickie, amount, date) => {
     if (!amount || isNaN(amount) || Number(amount) <= 0) {
       toast.error("Amount should be a valid number greater than 0.")
       return
@@ -74,7 +69,7 @@ const Expense = () => {
       await axiosInstance.post(API_PATH.EXPENSE.ADD_EXPENSE, {
         category: quickie.category,
         amount,
-        date: getToday(),
+        date,
         icon: quickie.icon
       })
       toast.success(`${quickie.category} added successfully`)

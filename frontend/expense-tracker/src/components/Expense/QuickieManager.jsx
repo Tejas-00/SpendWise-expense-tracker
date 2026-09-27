@@ -5,7 +5,13 @@ import Input from '../inputs/Input'
 
 const QuickieManager = ({ quickies, onAdd, onCreate, onUpdate, onDelete }) => {
     const [amounts, setAmounts] = useState({})
+    const [dates, setDates] = useState({})
     const [form, setForm] = useState(null)
+
+    const getToday = () => {
+        const today = new Date()
+        return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    }
 
     const updateForm = (key, value) => setForm({ ...form, [key]: value })
 
@@ -21,8 +27,9 @@ const QuickieManager = ({ quickies, onAdd, onCreate, onUpdate, onDelete }) => {
     }
 
     const addQuickie = (quickie) => {
-        onAdd(quickie, amounts[quickie._id])
+        onAdd(quickie, amounts[quickie._id], dates[quickie._id] || getToday())
         setAmounts({ ...amounts, [quickie._id]: "" })
+        setDates({ ...dates, [quickie._id]: getToday() })
     }
 
     return (
@@ -71,7 +78,7 @@ const QuickieManager = ({ quickies, onAdd, onCreate, onUpdate, onDelete }) => {
                         </div>
                         <div className="min-w-0 flex-1">
                             <p className="font-medium truncate">{quickie.category}</p>
-                            <div className="flex items-center gap-2 mt-1">
+                            <div className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_auto] items-center gap-2 mt-1">
                                 <input
                                     type="number"
                                     min="0"
@@ -79,6 +86,13 @@ const QuickieManager = ({ quickies, onAdd, onCreate, onUpdate, onDelete }) => {
                                     value={amounts[quickie._id] || ""}
                                     onChange={(event) => setAmounts({ ...amounts, [quickie._id]: event.target.value })}
                                     placeholder="Amount"
+                                    className="input-box w-full bg-transparent outline-none py-1 px-2"
+                                />
+                                <input
+                                    type="date"
+                                    aria-label={`Date for ${quickie.category}`}
+                                    value={dates[quickie._id] || getToday()}
+                                    onChange={(event) => setDates({ ...dates, [quickie._id]: event.target.value })}
                                     className="input-box w-full bg-transparent outline-none py-1 px-2"
                                 />
                                 <button type="button" className="add-btn add-btn-fill whitespace-nowrap" onClick={() => addQuickie(quickie)}>
