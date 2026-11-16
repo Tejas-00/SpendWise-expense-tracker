@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BASE_URL } from "./apiPath.js"
+import { API_PATH, BASE_URL } from "./apiPath.js"
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -10,8 +10,14 @@ const axiosInstance = axios.create({
     }
 })
 
+export let backendWarmupPromise;
+
 axiosInstance.interceptors.request.use(
-    (config) => {
+    async (config) => {
+        if (config.url !== API_PATH.HEALTH) {
+            await backendWarmupPromise;
+        }
+
         const accessToken = localStorage.getItem("token");
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
@@ -41,6 +47,19 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(error);
     }
 )
+
+export const retryBackendWarmup = () => {
+    backendWarmupPromise = axiosInstance.get(API_PATH.HEALTH, {
+        timeout: 120000,
+    }).then(() => true).catch((error) => {
+        console.warn("Backend wake-up attempt failed:", error.message || error)
+        return false;
+    })
+
+    return backendWarmupPromise;
+}
+
+retryBackendWarmup();
 
 export default axiosInstance;
 
